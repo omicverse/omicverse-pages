@@ -1,0 +1,2093 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Molecular dynamics — from a static model to motion" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="Tutorials-mol/t_mol_dynamics.html" />
+<meta property="og:site_name" content="omicverse" />
+<meta property="og:description" content="ov.mol hands you a structure( fetch_structure), a pocket( pockets) and a docked pose( dock). Every one of those is a snapshot, and a snapshot cannot answer the questions that decide whether a resul..." />
+<meta property="og:image:width" content="1146" />
+<meta property="og:image:height" content="600" />
+<meta property="og:image" content="_images/social_previews/summary_Tutorials-mol_t_mol_dynamics_98f6e9ca.png" />
+<meta property="og:image:alt" content="ov.mol hands you a structure( fetch_structure), a pocket( pockets) and a docked pose( dock). Every one of those is a snapshot, and a snapshot cannot answer the questions that decide whether a resul..." />
+<meta name="description" content="ov.mol hands you a structure( fetch_structure), a pocket( pockets) and a docked pose( dock). Every one of those is a snapshot, and a snapshot cannot answer the questions that decide whether a resul..." />
+<meta name="twitter:card" content="summary_large_image" />
+
+    <title>Molecular dynamics — from a static model to motion &#8212; omicverse</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster.custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster.bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-shadow.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-punk.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-noir.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-light.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/tooltipster-sideTip-borderless.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/micromodal.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=765f1782" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/icons.css?v=b452f90d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/override.css?v=7ae35cb1" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=1b26e916"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/hoverxref.js"></script>
+    <script src="../_static/js/tooltipster.bundle.min.js"></script>
+    <script src="../_static/js/micromodal.min.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Tutorials-mol/t_mol_dynamics';</script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Synthetic Biology" href="../tutorials/index_synbio.html" />
+    <link rel="prev" title="Molecular docking — validate the protocol, then dock the candidate" href="t_mol_docking.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="omicverse - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="omicverse - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    OmicVerse Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Installation_guild.html">OmicVerse Installation Guide</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/index_genetics.html">Genomics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-genetics/t_genetics_01_gwas_pipeline.html">GWAS pipeline 1 — From genotypes to a fine-mapped locus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-genetics/t_genetics_02_functional_followup.html">GWAS pipeline 2 — From a GWAS hit to a mechanism</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-genetics/t_genetics_03_spatially_resolved_gwas.html">GWAS pipeline 3 — Spatially Resolved GWAS Mapping</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/index_bulk.html">Bulk Transcriptomics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_bulk_upstream.html">Upstream</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-bulk/t_mapping_STAR.html">Bulk RNA-seq mapping with STAR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-bulk/t_mapping_kbpython.html">Bulk RNA-seq mapping with kb-python</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_bulk_preprocessing.html">Preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-bulk/t_bulk_combat.html">Batch correction in Bulk RNA-seq or microarray data</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_bulk_downstream.html">Downstream</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-bulk/t_deg.html">Different Expression Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-bulk/t_deseq2.html">Different Expression Analysis with DEseq2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-bulk/t_timecourse.html">Bulk RNA-seq time-course analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-bulk/t_network.html">Protein-Protein interaction (PPI) analysis by String-db</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-bulk/t_wgcna.html">WGCNA (Weighted gene co-expression network analysis) analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_bulk_deconvolution.html">Deconvolution</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-bulk/t_decov_bulk.html">Bulk deconvolution with reference scRNA-seq</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_bulk_others.html">Others</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-bulk/t_tcga.html">TCGA database preprocess</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/index_single.html">Single-Cell Transcriptomics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_alignment.html">Alignment</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_alignment_1k.html">Alignment and analysis of single-cell RNA-seq data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_alignment_kb.html">scRNA-seq preprocessing with kb-python (kallisto | bustools)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_alignment_compare.html">Benchmarking the simpleaf and kb-python alignment backends</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_alignment_velocity.html">Alignment and RNA velocity analysis of single-cell RNA-seq data.</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_preprocessing.html">Preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_preprocess_cpu.html">Preprocessing the data of scRNA-seq with omicverse[CPU-GPU-mixed]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_preprocess_gpu.html">Preprocessing the data of scRNA-seq with omicverse[GPU]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_preprocess_rust.html">Preprocessing the data of scRNA-seq [Rust / out-of-memory]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_ambient_rna.html">Removing ambient / contamination RNA from droplet scRNA-seq</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_cluster.html">Clustering space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_cnmf.html">GeneModule Identified</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_lazy.html">Lazy analysis of scRNA-seq</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_batch.html">Batch correction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/batch/index.html">Batch correction and data integration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/batch/t_single_batch.html">Data integration and batch correction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/batch/zoo/index.html">Batch-correction — backend zoo</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_annotation.html">Annotation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_anno_noref.html">Reference-free automated single-cell cell type annotation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_anno_ref.html">Reference automated single-cell cell type annotation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_cellvote.html">Consensus annotation with CellVote — PBMC3k</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_cellmatch.html">Mapping Cell Names to the Cell Ontology/Taxonomy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/anno-zoo/index.html">Individual methods</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_metacell.html">MetaCell</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/metacell/index.html">MetaCell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/metacell/t_metacell_recommended.html">Recommended workflow: SEACells end-to-end + downstream sanity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/metacell/t_metacell_multisample.html">Multi-sample metacells with batch correction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/metacell/zoo/index.html">MetaCell zoo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/metacell/zoo/t_metacell_seacells.html">SEACells — kernel archetypal analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/metacell/zoo/t_metacell_metaq.html">MetaQ — VQ-VAE codebook metacells</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/metacell/zoo/t_metacell_supercell.html">SuperCell — kNN graph + walktrap community detection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/metacell/zoo/t_metacell_kmeans.html">k-means — the trivial baseline that’s often hard to beat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/metacell/zoo/t_metacell_random.html">random — the honest lower-bound baseline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/metacell/zoo/t_metacell_geosketch.html">GeoSketch — density-aware sketching as a metacell baseline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/metacell/zoo/t_metacell_compare.html">Side-by-side comparison of all metacell backends</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_trajectory.html">Trajectory</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/trajectory/index.html">Trajectory inference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/trajectory/t_traj_slingshot.html">Trajectory Inference with Slingshot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/trajectory/t_traj_fate.html">Unified terminal-state &amp; fate-probability inference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/trajectory/zoo/index.html">Trajectory inference — backend zoo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_cellfate_gene.html">Timing-associated genes analysis with TimeFateKernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_cellfate.html">Identify the driver regulators of cell fate decisions</a></li>
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_perturb.html">In-silico Perturbation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/perturb/index.html">In-silico gene perturbation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/perturb/t_perturb_sctenifoldknk.html">In-silico perturbation with scTenifoldKnk (<code class="docutils literal notranslate"><span class="pre">backend='sctenifoldknk'</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/perturb/t_perturb_celloracle.html">In-silico perturbation with CellOracle (<code class="docutils literal notranslate"><span class="pre">backend='cell_oracle'</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/perturb/t_perturb_unified.html">Unified downstream analysis for <code class="docutils literal notranslate"><span class="pre">ov.single.perturb</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_communication.html">Cell-Cell Communication</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_ccc_cellphonedb.html">Cell-cell communication analysis with CellPhoneDB</a></li>
+
+
+
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_ccc_liana.html">Cell-cell communication analysis with LIANA+</a></li>
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_cell_structure.html">Cell Structure</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_deg_single.html">Differential expression and celltype analysis [All Cell]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_scdeg.html">Differential expression analysis [Meta Cell]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_scenic.html">Gene Regulatory Network Analysis with SCENIC</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_scdrug.html">Drug response predict with scDrug</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_simba.html">Data integration and batch correction with SIMBA</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_cnv.html">Copy-Number Variation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_copykat.html">Single-cell copy-number variation with CopyKAT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_infercnv.html">Single-cell copy-number variation with inferCNV</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_metabolism.html">Metabolism</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_metabolism.html">Single-cell metabolic landscape of a head &amp; neck tumour</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_metabolism_ccc.html">Metabolite cell-cell communication in a tumour microenvironment</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_enrichment.html">Enrichment</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_aucell.html">Pathway analysis with AUCell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/enrichment/t_es_compare.html">Comparing enrichment-score methods on scRNA-seq</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_velocity.html">Velocity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-velo/t_velo.html">Velocity Basic Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-velo/t_graphvelo.html">Velocity Optimization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-velo/t_regvelo.html">RNA velocity and regulatory perturbation analysis with RegVelo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-velo/t_regvelo_infer_grn.html">Run RegVelo with inferred GRN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-velo/t_velo_cellrank.html">Velocity-guided CellRank Analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_multi_omics.html">Multi-omics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_mofa.html">Multi omics analysis by MOFA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_mofa_glue.html">Multi omics analysis by MOFA and GLUE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_anno_trans.html">Celltype annotation transfer in multi-omics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_single_ev.html">Single-EV proteomics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-single/t_single_ev.html">Single-extracellular-vesicle (single-EV) proteomics</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/index_spatial.html">Spatial Transcriptomics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_spatial_spata2.html">SPATA2-inspired utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_spata2py.html">SPATA2-inspired AnnData spatial utilities in OmicVerse</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_spatial_preprocessing.html">Preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_crop_rotate.html">Crop and Rotation of spatial transcriptomic data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_cellpose.html">Cell Segmentation (10x HD)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_nanostring_preprocess.html">Analyze NanoString data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_xenium_preprocess.html">Analyze Xenium data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_atera_preprocess.html">Analyze 10x Atera (WTA Preview) FFPE breast cancer data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_visium_hd_preprocess.html">Analyze Visium HD data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_staligner.html">Spatial integration and clustering</a></li>
+
+
+
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_spatial_clustering.html">Clustering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/cluster/t_cluster_graphst.html">Spatial clustering with GraphST + pymclustR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/cluster/t_cluster_binary.html">Spatial clustering with BINARY + pymclustR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/cluster/t_cluster_stagate.html">Spatial clustering with STAGATE + pymclustR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/cluster/t_cluster_cast.html">Spatial clustering with CAST + pymclustR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/cluster/t_cluster_banksy.html">Spatial clustering with BANKSY + pymclustR</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_spatial_deconvolution.html">Deconvolution</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_spaceflow.html">Identifying Pseudo-Spatial Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_decov.html">Spatial deconvolution with reference scRNA-seq</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_decov_rctd.html">Spatial deconvolution with RCTD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_flashdeconv.html">FlashDeconv: Fast Spatial Deconvolution via Structure-Preserving Sketching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_starfysh_new.html">Spatial deconvolution without reference scRNA-seq</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_spatial_he_zoo.html">H&amp;E → spatial transcriptomics prediction (HE-zoo)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/he-zoo/t_histo_hest_fm.html">HEST-FM — pathology foundation model + ridge head</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/he-zoo/t_histo_stpath.html">STPath — zero-shot generative foundation model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/he-zoo/t_histo_stflow.html">STFlow — per-slide flow-matching denoiser</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/he-zoo/t_histo_istar.html">iStar — super-resolve a paired Visium + H&amp;E sample</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_spatial_downstream.html">Downstream</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_stt.html">Spatial transition tensor of single cells</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_commot_flowsig.html">Spatial Communication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_gaston.html">Spatial IsoDepth Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-space/t_slat.html">Single cell spatial alignment tools</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/index_airr.html">Immune Repertoire</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-airr/t_airr_01_singlecell.html">Single-cell TCR + transcriptome — the immune-repertoire pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-airr/t_airr_02_bulk.html">Bulk TCR immune-repertoire analysis with <code class="docutils literal notranslate"><span class="pre">ov.airr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-airr/t_airr_03_bcr.html">B-cell receptor repertoire analysis with <code class="docutils literal notranslate"><span class="pre">ov.airr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-airr/t_airr_06_bcr_singlecell.html">Single-cell BCR + transcriptome — clonal expansion, isotypes and somatic hypermutation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-airr/t_airr_04_tcr.html">TCR specificity analysis — grouping receptors by their antigen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-airr/t_airr_05_tcr_gex.html">Joint single-cell TCR + gene-expression analysis — a CoNGA-style workflow</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/index_flow.html">Flow Cytometry</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-flow/t_flow_01_reading_and_compensation.html">Reading FCS, compensation and display scales</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-flow/t_flow_02_gating.html">Gates, the gating strategy, and reading the numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-flow/t_flow_03_gatingml.html">Saving a strategy and applying it to a batch (Gating-ML 2.0)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-flow/t_flow_04_flowsom.html">FlowSOM — and what clustering does not replace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-flow/t_flow_05_real_data.html">The whole module on real data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-flow/t_flow_06_case_study.html">Case study — immunophenotyping PBMC after cardiac arrest</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/index_protein.html">Proteomics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-protein/t_protein_01_bulk_pipeline.html">Bulk LC-MS/MS proteomics — the best-practice pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-protein/t_protein_02_missing_values.html">Missing values in proteomics — diagnosis &amp; imputation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-protein/t_protein_03_summarization_dia.html">Peptide → protein summarization &amp; the DIA workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-protein/t_protein_04_differential_expression.html">Differential expression in proteomics: a benchmark with ground truth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-protein/t_protein_05_olink.html">Olink NPX — affinity proteomics analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../tutorials/index_mol.html">Structure, Docking &amp; Dynamics</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="t_mol_structure.html">Protein structure of an omics target — fetch, visualize, and <em>assess before you trust</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="t_mol_druggability.html">Is the target druggable? — binding pockets and known drugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="t_mol_docking.html">Molecular docking — <em>validate the protocol, then dock the candidate</em></a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Molecular dynamics — <em>from a static model to motion</em></a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/index_synbio.html">Synthetic Biology</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-synbio/t_synbio_01_intro.html">Synthetic biology with <code class="docutils literal notranslate"><span class="pre">ov.synbio</span></code> — from metabolism to enzyme to DNA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-synbio/t_synbio_02_circuits_to_pathways.html">ov.synbio II — circuits, CRISPR, assembly &amp; pathway design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-synbio/t_synbio_03_crispr_library.html">ov.synbio III — CRISPR editing &amp; directed-evolution libraries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-synbio/t_synbio_04_advanced.html">ov.synbio IV — advanced SOTA: mRNA design, de-novo binders, prime editing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-synbio/t_synbio_case01_succinate.html">Case study I — an <em>E. coli</em> succinate cell factory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-synbio/t_synbio_case02_dhfr_engineering.html">Case study II — engineering a more thermostable DHFR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-synbio/t_synbio_case03_dhfr_evaluation.html">Case study III — evaluating a protein design (does it get <em>better</em>?)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/index_metabol.html">Metabolomics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-metabol/t_metabol_01_intro.html">Metabolomics preprocessing and univariate statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-metabol/t_metabol_02_multivariate.html">Multivariate discrimination with PLS-DA and OPLS-DA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-metabol/t_metabol_03_pathway.html">Metabolite-set enrichment analysis (MSEA)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-metabol/t_metabol_04_untargeted.html">Untargeted LC-MS and mummichog pathway inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-metabol/t_metabol_05_lipidomics.html">Lipidomics — the <em>lipidr</em> workflow in omicverse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-metabol/t_metabol_06_batch_correction.html">Batch effect and drift correction for LC-MS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-metabol/t_metabol_07_multifactor.html">Multi-factor designs — ASCA and linear mixed models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-metabol/t_metabol_08_biomarker.html">Biomarker discovery — univariate AUC + multivariate panel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-metabol/t_metabol_09_dgca.html">Differential correlation — DGCA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-metabol/t_metabol_10_multiomics.html">Multi-omics integration — metabolomics + RNA-seq with MOFA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-metabol/t_metabol_11_real_data_mtbls1.html">Real-data case study — MTBLS1 (urine NMR, Type 2 Diabetes)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/index_epigenetics.html">Epigenetics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-epigenetics/t_epi_01_atac_preprocess.html">scATAC-seq preprocessing and quality control</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-epigenetics/t_epi_02_atac_clustering_annotation.html">scATAC clustering, annotation and gene activity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-epigenetics/t_epi_03_atac_chromvar.html">Transcription-factor motif activity with chromVAR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-epigenetics/t_epi_04_peak_to_gene.html">Peak-to-gene linkage (multiome)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-epigenetics/t_epi_05_marker_peaks.html">Marker peaks and differential accessibility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-epigenetics/t_epi_06_integration_label_transfer.html">scRNA–scATAC integration and label transfer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-epigenetics/t_epi_07_bulk_hic.html">Bulk Hi-C — contact maps, compartments and TADs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-epigenetics/t_epi_08_single_cell_hic.html">Single-cell Hi-C — imputation and cell-cycle embedding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-epigenetics/t_epi_09_bulk_chipseq_upstream.html">Bulk ChIP-seq upstream: FASTQ → peaks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-epigenetics/t_epi_10_bulk_footprinting.html">Bulk ATAC footprinting — TF activity from Tn5 cut profiles</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/index_microbiome.html">Microbiome</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-microbiome/t_16s_amplicon.html">16S rRNA amplicon analysis with OmicVerse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-microbiome/t_16s_phylogeny.html">16S phylogeny: MAFFT → FastTree → Faith PD + UniFrac</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-microbiome/t_16s_dada2.html">DADA2 backend: pure-Python ASV inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-microbiome/t_16s_da_comparison.html">Differential abundance: Wilcoxon vs DESeq2 vs ANCOM-BC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-microbiome/t_16s_meta_analysis.html">Cross-cohort 16S meta-analysis</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/index_multi_omics.html">Multi-Omics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-Multi-Omics/bulk-single/t_bulktrajblend.html">Bulk RNA-seq generate ‘interrupted’ cells to interpolate scRNA-seq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-Multi-Omics/bulk-single/t_bulk2single.html">Bulk RNA-seq to Single RNA-seq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-Multi-Omics/bulk-single/t_single2spatial.html">Single RNA-seq to Spatial RNA-seq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-Multi-Omics/micro-meta/t_micro_metabol_paired.html">Paired microbe ↔ metabolite integration (Franzosa 2019 IBD)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/index_foundation.html">Foundation Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_foundation_overview.html">Overview</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_foundation_skill_ready.html">Skill-Ready Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-llm/t_scgpt.html">scGPT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-llm/t_geneformer.html">GeneFormer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-llm/t_uce.html">UCE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-llm/t_scfoundation.html">scFoundation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Tutorials-llm/t_cellplm.html">CellPLM</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_foundation_core.html">Core Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_foundation_specialized.html">Specialized Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../tutorials/index_foundation_domain.html">Domain-Specific Models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../tutorials/index_plotting.html">Visualization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-plotting/t_visualize_single.html">Visualization of single cell RNA-seq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-plotting/t_visualize_bulk.html">Visualization of Bulk RNA-seq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-plotting/t_palette.html">Palette optimization for publication-quality single-cell &amp; spatial plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-plotting/t_publication_plotting.html">Scientific plotting for publication with OmicVerse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-plotting/t_visualize_colorsystem.html">Color system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-plotting/t_plot1cell.html">Circular UMAP with plot1cell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-plotting/t_funkyheatmap.html">Funky heatmaps for benchmark / multi-metric tables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-plotting/t_clinical_stats_layout.html">Clinical statistics and figure assembly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-plotting/t_statistical_plots.html">Statistical plots from a table</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../omicclaw/index.html">OmicClaw</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../omicclaw/index_gateway.html">Gateway and Channels</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-jarvis/t_msg_bot_overview.html">OmicClaw Gateway Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-jarvis/t_setup_auth.html">OmicClaw Setup and Auth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-jarvis/t_channel_telegram.html">OmicClaw Telegram Tutorial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-jarvis/t_channel_feishu.html">OmicClaw Feishu 教程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-jarvis/t_channel_imessage.html">OmicClaw iMessage Tutorial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-jarvis/t_channel_qq.html">OmicClaw QQ Tutorial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-jarvis/t_session_commands.html">OmicClaw Session Workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-jarvis/t_troubleshooting.html">OmicClaw Troubleshooting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../omicclaw/index_mcp.html">MCP Server</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-llm/t_mcp_guide.html">OmicVerse MCP Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-llm/t_mcp_quickstart.html">OmicVerse MCP Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-llm/t_mcp_full_start.html">OmicVerse MCP Full Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-llm/t_mcp_tools.html">OmicVerse MCP Tool Catalog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-llm/t_mcp_clients.html">OmicVerse MCP Clients and Deployment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-llm/t_mcp_runtime.html">OmicVerse MCP Runtime and Troubleshooting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-llm/t_mcp_reference.html">OmicVerse MCP Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-llm/t_mcp_claude_code.html">Using OmicVerse MCP with Claude Code — Step by Step</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../omicclaw/index_notebooks.html">General Notebooks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-llm/t_ov_agent_pbmc3k.html">J.A.R.V.I.S. with PBMC3k</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Tutorials-llm/ov_agent_ten_task_suite.html">J.A.R.V.I.S. with Ten-Task Suite</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/user.html">User API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.generate_reference_table.html">omicverse.generate_reference_table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.settings.cpu_gpu_mixed_init.html">omicverse.settings.cpu_gpu_mixed_init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.settings.gpu_init.html">omicverse.settings.gpu_init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.io.load.html">omicverse.io.load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.io.read.html">omicverse.io.read</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.io.read_10x_h5.html">omicverse.io.read_10x_h5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.io.read_10x_mtx.html">omicverse.io.read_10x_mtx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.io.read_csv.html">omicverse.io.read_csv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.io.read_h5ad.html">omicverse.io.read_h5ad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.io.read_nanostring.html">omicverse.io.read_nanostring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.io.read_visium_hd.html">omicverse.io.read_visium_hd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.io.read_visium_hd_bin.html">omicverse.io.read_visium_hd_bin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.io.read_visium_hd_seg.html">omicverse.io.read_visium_hd_seg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.io.read_xenium.html">omicverse.io.read_xenium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.io.save.html">omicverse.io.save</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.io.spatial.read_visium.html">omicverse.io.spatial.read_visium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.io.spatial.write_visium_hd_cellseg.html">omicverse.io.spatial.write_visium_hd_cellseg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.amplicon_16s_pipeline.html">omicverse.alignment.amplicon_16s_pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.build_amplicon_anndata.html">omicverse.alignment.build_amplicon_anndata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.build_phylogeny.html">omicverse.alignment.build_phylogeny</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.bulk_rnaseq_pipeline.html">omicverse.alignment.bulk_rnaseq_pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.count.html">omicverse.alignment.count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.cutadapt.html">omicverse.alignment.cutadapt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.dada2_pipeline.html">omicverse.alignment.dada2_pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.dada2.denoise.html">omicverse.alignment.dada2.denoise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.vsearch.dereplicate.html">omicverse.alignment.vsearch.dereplicate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.fastp.html">omicverse.alignment.fastp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.fasttree.html">omicverse.alignment.fasttree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.featureCount.html">omicverse.alignment.featureCount</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.fetch_rdp.html">omicverse.alignment.fetch_rdp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.fetch_silva.html">omicverse.alignment.fetch_silva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.fetch_sintax_ref.html">omicverse.alignment.fetch_sintax_ref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.dada2.filter_and_trim.html">omicverse.alignment.dada2.filter_and_trim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.vsearch.filter_quality.html">omicverse.alignment.vsearch.filter_quality</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.fqdump.html">omicverse.alignment.fqdump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.dada2.learn_errors.html">omicverse.alignment.dada2.learn_errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.mafft.html">omicverse.alignment.mafft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.dada2.make_seqtab.html">omicverse.alignment.dada2.make_seqtab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.dada2.merge_pairs.html">omicverse.alignment.dada2.merge_pairs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.parallel_fastq_dump.html">omicverse.alignment.parallel_fastq_dump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.prefetch.html">omicverse.alignment.prefetch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.ref.html">omicverse.alignment.ref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.dada2.remove_chimeras.html">omicverse.alignment.dada2.remove_chimeras</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.vsearch.sintax.html">omicverse.alignment.vsearch.sintax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.STAR.html">omicverse.alignment.STAR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.vsearch.uchime3_denovo.html">omicverse.alignment.vsearch.uchime3_denovo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.vsearch.unoise3.html">omicverse.alignment.vsearch.unoise3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.alignment.vsearch.usearch_global.html">omicverse.alignment.vsearch.usearch_global</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.anndata_to_CPU.html">omicverse.pp.anndata_to_CPU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.anndata_to_GPU.html">omicverse.pp.anndata_to_GPU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.binary_search.html">omicverse.pp.binary_search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.champ.html">omicverse.pp.champ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.filter_cells.html">omicverse.pp.filter_cells</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.filter_genes.html">omicverse.pp.filter_genes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.highly_variable_features.html">omicverse.pp.highly_variable_features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.highly_variable_genes.html">omicverse.pp.highly_variable_genes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.identify_robust_genes.html">omicverse.pp.identify_robust_genes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.leiden.html">omicverse.pp.leiden</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.log1p.html">omicverse.pp.log1p</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.louvain.html">omicverse.pp.louvain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.mde.html">omicverse.pp.mde</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.neighbors.html">omicverse.pp.neighbors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.normalize_pearson_residuals.html">omicverse.pp.normalize_pearson_residuals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.pca.html">omicverse.pp.pca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.preprocess.html">omicverse.pp.preprocess</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.qc.html">omicverse.pp.qc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.recover_counts.html">omicverse.pp.recover_counts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.regress.html">omicverse.pp.regress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.regress_and_scale.html">omicverse.pp.regress_and_scale</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.remove_cc_genes.html">omicverse.pp.remove_cc_genes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.scale.html">omicverse.pp.scale</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.score_genes_cell_cycle.html">omicverse.pp.score_genes_cell_cycle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.scrublet.html">omicverse.pp.scrublet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.scrublet_simulate_doublets.html">omicverse.pp.scrublet_simulate_doublets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.select_hvf_pegasus.html">omicverse.pp.select_hvf_pegasus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.sude.html">omicverse.pp.sude</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.tsne.html">omicverse.pp.tsne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pp.umap.html">omicverse.pp.umap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.Annotation.html">omicverse.single.Annotation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.AnnotationRef.html">omicverse.single.AnnotationRef</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.auto_resolution.html">omicverse.single.auto_resolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.autoResolution.html">omicverse.single.autoResolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.batch_correction.html">omicverse.single.batch_correction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.CellOntologyMapper.html">omicverse.single.CellOntologyMapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.CellVote.html">omicverse.single.CellVote</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.cNMF.html">omicverse.single.cNMF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.convert_human_to_mouse_network.html">omicverse.single.convert_human_to_mouse_network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.cosg.html">omicverse.single.cosg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.cytotrace2.html">omicverse.single.cytotrace2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.DCT.html">omicverse.single.DCT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.DEG.html">omicverse.single.DEG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.download_cellphonedb_database.html">omicverse.single.download_cellphonedb_database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.download_cl.html">omicverse.single.download_cl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.Drug_Response.html">omicverse.single.Drug_Response</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.dynamic_features.html">omicverse.single.dynamic_features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.factor_correlation.html">omicverse.single.factor_correlation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.factor_exact.html">omicverse.single.factor_exact</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.Fate.html">omicverse.single.Fate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.find_markers.html">omicverse.single.find_markers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.format_liana_results.html">omicverse.single.format_liana_results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.gene_trends.html">omicverse.single.gene_trends</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.generate_scRNA_report.html">omicverse.single.generate_scRNA_report</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.geneset_aucell.html">omicverse.single.geneset_aucell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.get_celltype_marker.html">omicverse.single.get_celltype_marker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.get_cluster_celltype.html">omicverse.single.get_cluster_celltype</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.get_markers.html">omicverse.single.get_markers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.get_obs_value.html">omicverse.single.get_obs_value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.get_weights.html">omicverse.single.get_weights</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.GLUE_pair.html">omicverse.single.GLUE_pair</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.gptcelltype.html">omicverse.single.gptcelltype</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.gptcelltype_local.html">omicverse.single.gptcelltype_local</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.hematopoiesis.html">omicverse.single.hematopoiesis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.lazy.html">omicverse.single.lazy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.load_human_prior_interaction_network.html">omicverse.single.load_human_prior_interaction_network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.MetaCell.html">omicverse.single.MetaCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.MetaTiME.html">omicverse.single.MetaTiME</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.Monocle.html">omicverse.single.Monocle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.mouse_hsc_nestorowa16.html">omicverse.single.mouse_hsc_nestorowa16</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.pathway_aucell.html">omicverse.single.pathway_aucell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.pathway_aucell_enrichment.html">omicverse.single.pathway_aucell_enrichment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.pathway_enrichment.html">omicverse.single.pathway_enrichment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.pathway_enrichment_plot.html">omicverse.single.pathway_enrichment_plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.plot_metacells.html">omicverse.single.plot_metacells</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.pyCEFCON.html">omicverse.single.pyCEFCON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.pyMOFA.html">omicverse.single.pyMOFA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.pyMOFAART.html">omicverse.single.pyMOFAART</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.pySCSA.html">omicverse.single.pySCSA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.pySIMBA.html">omicverse.single.pySIMBA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.pyTOSICA.html">omicverse.single.pyTOSICA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.pyVIA.html">omicverse.single.pyVIA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.run_cellphonedb_v5.html">omicverse.single.run_cellphonedb_v5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.run_liana.html">omicverse.single.run_liana</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.scanpy_cellanno_from_dict.html">omicverse.single.scanpy_cellanno_from_dict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.SCENIC.html">omicverse.single.SCENIC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.TrajInfer.html">omicverse.single.TrajInfer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.single.Velo.html">omicverse.single.Velo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk.batch_correction.html">omicverse.bulk.batch_correction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk.Deconvolution.html">omicverse.bulk.Deconvolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk.geneset_enrichment.html">omicverse.bulk.geneset_enrichment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk.geneset_plot.html">omicverse.bulk.geneset_plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk.geneset_plot_multi.html">omicverse.bulk.geneset_plot_multi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk.Matrix_ID_mapping.html">omicverse.bulk.Matrix_ID_mapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk.pyDEG.html">omicverse.bulk.pyDEG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk.pyGSEA.html">omicverse.bulk.pyGSEA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk.pyPPI.html">omicverse.bulk.pyPPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk.pyTCGA.html">omicverse.bulk.pyTCGA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk.pyWGCNA.html">omicverse.bulk.pyWGCNA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk.readWGCNA.html">omicverse.bulk.readWGCNA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk.string_interaction.html">omicverse.bulk.string_interaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.aggregate_by_class.html">omicverse.metabol.aggregate_by_class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.annotate_lipids.html">omicverse.metabol.annotate_lipids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.annotate_peaks.html">omicverse.metabol.annotate_peaks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.anova.html">omicverse.metabol.anova</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.asca.html">omicverse.metabol.asca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.asca_variance_bar.html">omicverse.metabol.asca_variance_bar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.biomarker_panel.html">omicverse.metabol.biomarker_panel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.blank_filter.html">omicverse.metabol.blank_filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.corr_network.html">omicverse.metabol.corr_network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.corr_network_plot.html">omicverse.metabol.corr_network_plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.cv_filter.html">omicverse.metabol.cv_filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.dgca.html">omicverse.metabol.dgca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.dgca_class_bar.html">omicverse.metabol.dgca_class_bar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.differential.html">omicverse.metabol.differential</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.drift_correct.html">omicverse.metabol.drift_correct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.fetch_chebi_compounds.html">omicverse.metabol.fetch_chebi_compounds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.fetch_hmdb_from_name.html">omicverse.metabol.fetch_hmdb_from_name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.fetch_kegg_pathways.html">omicverse.metabol.fetch_kegg_pathways</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.fetch_lion_associations.html">omicverse.metabol.fetch_lion_associations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.impute.html">omicverse.metabol.impute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.lion_enrichment.html">omicverse.metabol.lion_enrichment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.load_pathways.html">omicverse.metabol.load_pathways</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.map_ids.html">omicverse.metabol.map_ids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.meba.html">omicverse.metabol.meba</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.mixed_model.html">omicverse.metabol.mixed_model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.msea_gsea.html">omicverse.metabol.msea_gsea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.msea_ora.html">omicverse.metabol.msea_ora</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.mummichog_basic.html">omicverse.metabol.mummichog_basic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.normalize.html">omicverse.metabol.normalize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.opls_da.html">omicverse.metabol.opls_da</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.parse_lipid.html">omicverse.metabol.parse_lipid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.pathway_bar.html">omicverse.metabol.pathway_bar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.pathway_dot.html">omicverse.metabol.pathway_dot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.plsda.html">omicverse.metabol.plsda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.pyMetabo.html">omicverse.metabol.pyMetabo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.read_lcms.html">omicverse.metabol.read_lcms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.read_metaboanalyst.html">omicverse.metabol.read_metaboanalyst</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.read_wide.html">omicverse.metabol.read_wide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.roc_feature.html">omicverse.metabol.roc_feature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.run_mofa.html">omicverse.metabol.run_mofa</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.s_plot.html">omicverse.metabol.s_plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.sample_qc.html">omicverse.metabol.sample_qc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.sample_qc_plot.html">omicverse.metabol.sample_qc_plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.serrf.html">omicverse.metabol.serrf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.pyMetabo.significant_metabolites.html">omicverse.metabol.pyMetabo.significant_metabolites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.transform.html">omicverse.metabol.transform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.vip_bar.html">omicverse.metabol.vip_bar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.pyMetabo.vip_table.html">omicverse.metabol.pyMetabo.vip_table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.metabol.volcano.html">omicverse.metabol.volcano</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.Alpha.html">omicverse.micro.Alpha</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.DA.ancombc.html">omicverse.micro.DA.ancombc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.attach_tree.html">omicverse.micro.attach_tree</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.Beta.html">omicverse.micro.Beta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.Beta.braycurtis.html">omicverse.micro.Beta.braycurtis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.clr.html">omicverse.micro.clr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.collapse_taxa.html">omicverse.micro.collapse_taxa</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.combine_studies.html">omicverse.micro.combine_studies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.MMvec.conditional_probabilities.html">omicverse.micro.MMvec.conditional_probabilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.MMvec.cooccurrence.html">omicverse.micro.MMvec.cooccurrence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.DA.html">omicverse.micro.DA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.DA.deseq2.html">omicverse.micro.DA.deseq2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.fetch_franzosa_ibd_2019.html">omicverse.micro.fetch_franzosa_ibd_2019</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.filter_by_prevalence.html">omicverse.micro.filter_by_prevalence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.MMvec.fit.html">omicverse.micro.MMvec.fit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.ilr.html">omicverse.micro.ilr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.meta_da.html">omicverse.micro.meta_da</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.MMvec.html">omicverse.micro.MMvec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.Ordinate.nmds.html">omicverse.micro.Ordinate.nmds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.Alpha.observed.html">omicverse.micro.Alpha.observed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.Ordinate.html">omicverse.micro.Ordinate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.paired_cca.html">omicverse.micro.paired_cca</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.paired_spearman.html">omicverse.micro.paired_spearman</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.Ordinate.pcoa.html">omicverse.micro.Ordinate.pcoa</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.plot_embedding_biplot.html">omicverse.micro.plot_embedding_biplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.plot_mmvec_training.html">omicverse.micro.plot_mmvec_training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.Ordinate.proportion_explained.html">omicverse.micro.Ordinate.proportion_explained</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.rarefy.html">omicverse.micro.rarefy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.Alpha.run.html">omicverse.micro.Alpha.run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.Alpha.shannon.html">omicverse.micro.Alpha.shannon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.simulate_paired.html">omicverse.micro.simulate_paired</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.MMvec.top_pairs.html">omicverse.micro.MMvec.top_pairs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.micro.DA.wilcoxon.html">omicverse.micro.DA.wilcoxon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.bin2cell.html">omicverse.space.bin2cell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.Cal_Spatial_Net.html">omicverse.space.Cal_Spatial_Net</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.calculate_gene_signature.html">omicverse.space.calculate_gene_signature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.CAST.html">omicverse.space.CAST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.cellcharter.html">omicverse.space.cellcharter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.CellLoc.html">omicverse.space.CellLoc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.CellMap.html">omicverse.space.CellMap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.clusters.html">omicverse.space.clusters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.create_communication_anndata.html">omicverse.space.create_communication_anndata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.crop_space_visium.html">omicverse.space.crop_space_visium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.Deconvolution.html">omicverse.space.Deconvolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.GASTON.html">omicverse.space.GASTON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.map_spatial_auto.html">omicverse.space.map_spatial_auto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.map_spatial_manual.html">omicverse.space.map_spatial_manual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.merge_cluster.html">omicverse.space.merge_cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.moranI.html">omicverse.space.moranI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.nmf_tissue_zones.html">omicverse.space.nmf_tissue_zones</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.pySpaceFlow.html">omicverse.space.pySpaceFlow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.pySTAGATE.html">omicverse.space.pySTAGATE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.pySTAligner.html">omicverse.space.pySTAligner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.read_visium_10x.html">omicverse.space.read_visium_10x</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.rotate_space_visium.html">omicverse.space.rotate_space_visium</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.salvage_secondary_labels.html">omicverse.space.salvage_secondary_labels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.spatial_autocorr.html">omicverse.space.spatial_autocorr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.spatial_neighbors.html">omicverse.space.spatial_neighbors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.STT.html">omicverse.space.STT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.svg.html">omicverse.space.svg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.sync_visium_hd_seg_geometries.html">omicverse.space.sync_visium_hd_seg_geometries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.Tangram.html">omicverse.space.Tangram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.update_classification_from_database.html">omicverse.space.update_classification_from_database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.visium_10x_hd_cellpose_expand.html">omicverse.space.visium_10x_hd_cellpose_expand</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.visium_10x_hd_cellpose_gex.html">omicverse.space.visium_10x_hd_cellpose_gex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.space.visium_10x_hd_cellpose_he.html">omicverse.space.visium_10x_hd_cellpose_he</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk2single.Bulk2Single.html">omicverse.bulk2single.Bulk2Single</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk2single.bulk2single_plot_cellprop.html">omicverse.bulk2single.bulk2single_plot_cellprop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk2single.bulk2single_plot_correlation.html">omicverse.bulk2single.bulk2single_plot_correlation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk2single.BulkTrajBlend.html">omicverse.bulk2single.BulkTrajBlend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.bulk2single.Single2Spatial.html">omicverse.bulk2single.Single2Spatial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.add_density_contour.html">omicverse.pl.add_density_contour</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.add_palue.html">omicverse.pl.add_palue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.add_pie2spatial.html">omicverse.pl.add_pie2spatial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.add_streamplot.html">omicverse.pl.add_streamplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.branch_streamplot.html">omicverse.pl.branch_streamplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.bardotplot.html">omicverse.pl.bardotplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.boxplot.html">omicverse.pl.boxplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.branch_streamplot.html">omicverse.pl.branch_streamplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.calculate_gene_density.html">omicverse.pl.calculate_gene_density</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.ccc_heatmap.html">omicverse.pl.ccc_heatmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.ccc_network_plot.html">omicverse.pl.ccc_network_plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.ccc_stat_plot.html">omicverse.pl.ccc_stat_plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.cell_cor_heatmap.html">omicverse.pl.cell_cor_heatmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.CellChatViz.html">omicverse.pl.CellChatViz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.cellproportion.html">omicverse.pl.cellproportion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.complexheatmap.html">omicverse.pl.complexheatmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.contour.html">omicverse.pl.contour</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.ConvexHull.html">omicverse.pl.ConvexHull</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.create_custom_colormap.html">omicverse.pl.create_custom_colormap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.dotplot.html">omicverse.pl.dotplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.dynamic_heatmap.html">omicverse.pl.dynamic_heatmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.dynamic_trends.html">omicverse.pl.dynamic_trends</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.embedding.html">omicverse.pl.embedding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.embedding_adjust.html">omicverse.pl.embedding_adjust</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.embedding_atlas.html">omicverse.pl.embedding_atlas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.embedding_celltype.html">omicverse.pl.embedding_celltype</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.embedding_density.html">omicverse.pl.embedding_density</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.feature_heatmap.html">omicverse.pl.feature_heatmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.ForbiddenCity.html">omicverse.pl.ForbiddenCity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.gen_mpl_labels.html">omicverse.pl.gen_mpl_labels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.geneset_wordcloud.html">omicverse.pl.geneset_wordcloud</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.group_heatmap.html">omicverse.pl.group_heatmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.marker_heatmap.html">omicverse.pl.marker_heatmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.markers_dotplot.html">omicverse.pl.markers_dotplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.palette.html">omicverse.pl.palette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.plot1cell.html">omicverse.pl.plot1cell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.plot_cellproportion.html">omicverse.pl.plot_cellproportion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.plot_embedding_celltype.html">omicverse.pl.plot_embedding_celltype</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.plot_flowsig_network.html">omicverse.pl.plot_flowsig_network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.plot_grouped_fractions.html">omicverse.pl.plot_grouped_fractions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.plot_pca_variance_ratio.html">omicverse.pl.plot_pca_variance_ratio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.plot_set.html">omicverse.pl.plot_set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.plot_spatial.html">omicverse.pl.plot_spatial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.plot_text_set.html">omicverse.pl.plot_text_set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.rank_genes_groups_dotplot.html">omicverse.pl.rank_genes_groups_dotplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.single_group_boxplot.html">omicverse.pl.single_group_boxplot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.tsne.html">omicverse.pl.tsne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.umap.html">omicverse.pl.umap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.venn.html">omicverse.pl.venn</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.violin.html">omicverse.pl.violin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.pl.volcano.html">omicverse.pl.volcano</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.bhattacherjee.html">omicverse.datasets.bhattacherjee</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.blobs.html">omicverse.datasets.blobs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.bm.html">omicverse.datasets.bm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.bone_marrow.html">omicverse.datasets.bone_marrow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.burczynski06.html">omicverse.datasets.burczynski06</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.chromaffin.html">omicverse.datasets.chromaffin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.cite_seq.html">omicverse.datasets.cite_seq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.create_mock_dataset.html">omicverse.datasets.create_mock_dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.decov_bulk_covid_bulk.html">omicverse.datasets.decov_bulk_covid_bulk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.decov_bulk_covid_single.html">omicverse.datasets.decov_bulk_covid_single</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.dentate_gyrus.html">omicverse.datasets.dentate_gyrus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.dentate_gyrus_scvelo.html">omicverse.datasets.dentate_gyrus_scvelo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.download_data.html">omicverse.datasets.download_data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.download_data_requests.html">omicverse.datasets.download_data_requests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.get_adata.html">omicverse.datasets.get_adata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.gillespie.html">omicverse.datasets.gillespie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.haber.html">omicverse.datasets.haber</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.hematopoiesis.html">omicverse.datasets.hematopoiesis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.hematopoiesis_raw.html">omicverse.datasets.hematopoiesis_raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.hg_forebrain_glutamatergic.html">omicverse.datasets.hg_forebrain_glutamatergic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.hl60.html">omicverse.datasets.hl60</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.human_tfs.html">omicverse.datasets.human_tfs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.krumsiek11.html">omicverse.datasets.krumsiek11</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.moignard15.html">omicverse.datasets.moignard15</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.multi_brain_5k.html">omicverse.datasets.multi_brain_5k</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.nascseq.html">omicverse.datasets.nascseq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.pancreas_cellrank.html">omicverse.datasets.pancreas_cellrank</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.pancreatic_endocrinogenesis.html">omicverse.datasets.pancreatic_endocrinogenesis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.paul15.html">omicverse.datasets.paul15</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.pbmc3k.html">omicverse.datasets.pbmc3k</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.pbmc8k.html">omicverse.datasets.pbmc8k</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.sc_ref_Lymph_Node.html">omicverse.datasets.sc_ref_Lymph_Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.sceu_seq_organoid.html">omicverse.datasets.sceu_seq_organoid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.sceu_seq_rpe1.html">omicverse.datasets.sceu_seq_rpe1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.scifate.html">omicverse.datasets.scifate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.scnt_seq_neuron_labeling.html">omicverse.datasets.scnt_seq_neuron_labeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.scnt_seq_neuron_splicing.html">omicverse.datasets.scnt_seq_neuron_splicing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.scslamseq.html">omicverse.datasets.scslamseq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.seqfish.html">omicverse.datasets.seqfish</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.toggleswitch.html">omicverse.datasets.toggleswitch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.datasets.zebrafish.html">omicverse.datasets.zebrafish</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.external.GraphST.html">omicverse.external.GraphST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.call_tool.html">omicverse.utils.biocontext.call_tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.get_ensembl_id.html">omicverse.utils.biocontext.get_ensembl_id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.get_fulltext.html">omicverse.utils.biocontext.get_fulltext</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.get_uniprot_id.html">omicverse.utils.biocontext.get_uniprot_id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.list_tools.html">omicverse.utils.biocontext.list_tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.query_alphafold.html">omicverse.utils.biocontext.query_alphafold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.query_cell_ontology.html">omicverse.utils.biocontext.query_cell_ontology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.query_chebi.html">omicverse.utils.biocontext.query_chebi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.query_efo.html">omicverse.utils.biocontext.query_efo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.query_go.html">omicverse.utils.biocontext.query_go</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.query_hpa.html">omicverse.utils.biocontext.query_hpa</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.query_interpro.html">omicverse.utils.biocontext.query_interpro</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.query_opentargets.html">omicverse.utils.biocontext.query_opentargets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.query_panglaodb.html">omicverse.utils.biocontext.query_panglaodb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.query_reactome.html">omicverse.utils.biocontext.query_reactome</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.query_string.html">omicverse.utils.biocontext.query_string</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.query_uniprot.html">omicverse.utils.biocontext.query_uniprot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.search_clinical_trials.html">omicverse.utils.biocontext.search_clinical_trials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.search_drugs.html">omicverse.utils.biocontext.search_drugs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.search_interpro.html">omicverse.utils.biocontext.search_interpro</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.search_literature.html">omicverse.utils.biocontext.search_literature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.search_preprints.html">omicverse.utils.biocontext.search_preprints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.biocontext.search_pride.html">omicverse.utils.biocontext.search_pride</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.cal_paga.html">omicverse.utils.cal_paga</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.cluster.html">omicverse.utils.cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.convert2gene_id.html">omicverse.utils.convert2gene_id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.convert2gene_symbol.html">omicverse.utils.convert2gene_symbol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.convert2symbol.html">omicverse.utils.convert2symbol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.convert_adata_for_rust.html">omicverse.utils.convert_adata_for_rust</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.convert_to_pandas.html">omicverse.utils.convert_to_pandas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.download_CaDRReS_model.html">omicverse.utils.download_CaDRReS_model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.download_GDSC_data.html">omicverse.utils.download_GDSC_data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.download_geneid_annotation_pair.html">omicverse.utils.download_geneid_annotation_pair</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.download_pathway_database.html">omicverse.utils.download_pathway_database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.download_tosica_gmt.html">omicverse.utils.download_tosica_gmt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.geneset_prepare.html">omicverse.utils.geneset_prepare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.get_gene_annotation.html">omicverse.utils.get_gene_annotation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.gtf_to_pair_tsv.html">omicverse.utils.gtf_to_pair_tsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.LDA_topic.html">omicverse.utils.LDA_topic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.load_metabolights.html">omicverse.utils.load_metabolights</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.mde.html">omicverse.utils.mde</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.plot_paga.html">omicverse.utils.plot_paga</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.refine_label.html">omicverse.utils.refine_label</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.retrieve_layers.html">omicverse.utils.retrieve_layers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.roe.html">omicverse.utils.roe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.store_layers.html">omicverse.utils.store_layers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.symbol2id.html">omicverse.utils.symbol2id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.weighted_knn_trainer.html">omicverse.utils.weighted_knn_trainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.weighted_knn_transfer.html">omicverse.utils.weighted_knn_transfer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/reference/omicverse.utils.wrap_dataframe.html">omicverse.utils.wrap_dataframe</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../Release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Developer_guild.html">Developer guild</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GPU_supported_registry_functions.html">Registered Functions — GPU Support Overview</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Starlitnightly/omicverse/discussions">Discussion</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Starlitnightly/omicverse">GitHub</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Starlitnightly/omicverse" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Starlitnightly/omicverse/blob/master/docs/Tutorials-mol/t_mol_dynamics.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Starlitnightly/omicverse/edit/master/docs/Tutorials-mol/t_mol_dynamics.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Starlitnightly/omicverse/issues/new?title=Issue%20on%20page%20%2FTutorials-mol/t_mol_dynamics.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/Tutorials-mol/t_mol_dynamics.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Molecular dynamics — from a static model to motion</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">0. Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-target">1. The target</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-it-one-call">2. Run it — <em>one call</em></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#did-it-stay-folded">3. Did it stay folded?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-is-it-flexible">4. Where is it flexible?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compactness-and-secondary-structure">5. Compactness and secondary structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#which-contacts-actually-persist">6. Which contacts actually persist?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conformational-states">7. Conformational states</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-by-stage-control-when-the-defaults-are-not-what-you-want">8. Stage-by-stage control — <em>when the defaults are not what you want</em></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dock-md-mm-gbsa-rescoring-a-pose-with-dynamics">9. dock → MD → MM-GBSA — <em>rescoring a pose with dynamics</em></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">Interpretation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="molecular-dynamics-from-a-static-model-to-motion">
+<h1>Molecular dynamics — <em>from a static model to motion</em><a class="headerlink" href="#molecular-dynamics-from-a-static-model-to-motion" title="Link to this heading">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">ov.mol</span></code> hands you a <strong>structure</strong> (<code class="docutils literal notranslate"><span class="pre">fetch_structure</span></code>), a <strong>pocket</strong>
+(<code class="docutils literal notranslate"><span class="pre">pockets</span></code>) and a <strong>docked pose</strong> (<code class="docutils literal notranslate"><span class="pre">dock</span></code>). Every one of those is a
+<em>snapshot</em>, and a snapshot cannot answer the questions that decide whether a
+result is real:</p>
+<ul class="simple">
+<li><p>is this AlphaFold fold actually <strong>stable</strong>, and which parts are floppy?</p></li>
+<li><p>does that docked pose <strong>survive</strong> more than a picosecond of thermal motion?</p></li>
+<li><p>what is the binding energy averaged over an <strong>ensemble</strong>, rather than read
+off one rigid-receptor pose?</p></li>
+</ul>
+<p>Molecular dynamics supplies the missing time axis. This notebook runs the arc
+end to end on real targets — <strong>ubiquitin</strong> (1UBQ) and <strong>EGFR</strong> (1M17).</p>
+<blockquote>
+<div><p><strong>Hardware.</strong> MD is GPU work. Every call prints the OpenMM platform it
+resolved; if it says <code class="docutils literal notranslate"><span class="pre">CPU</span></code> where you expected <code class="docutils literal notranslate"><span class="pre">CUDA</span></code>, see the install notes
+in the <a class="reference internal" href="../tutorials/index_mol.html"><span class="std std-doc">module index</span></a>. Timings below are from an
+NVIDIA H100.</p>
+</div></blockquote>
+<section id="setup">
+<h2>0. Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
+<p>The dynamics layer needs the <code class="docutils literal notranslate"><span class="pre">[md]</span></code> extra (OpenMM + MDTraj). PDBFixer, which
+repairs structures before simulation, is vendored inside omicverse and never
+needs installing.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">'omicverse[md]'</span>
+<span class="c1"># on a GPU box prefer the conda-forge CUDA build:</span>
+conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>openmm<span class="w"> </span>mdtraj
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">omicverse</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ov</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">ov</span><span class="o">.</span><span class="n">plot_set</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>🔬 Starting plot initialization...
+🧬 Detecting GPU devices…
+🚫 PyTorch not available - GPU detection skipped
+
+   ____            _     _    __                  
+  / __ \____ ___  (_)___| |  / /__  _____________ 
+ / / / / __ `__ \/ / ___/ | / / _ \/ ___/ ___/ _ \ 
+/ /_/ / / / / / / / /__ | |/ /  __/ /  (__  )  __/ 
+\____/_/ /_/ /_/_/\___/ |___/\___/_/  /____/\___/                                              
+
+🔖 Version: 2.2.4rc1   📚 Tutorials: https://omicverse.readthedocs.io/
+✅ plot_set complete.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-target">
+<h2>1. The target<a class="headerlink" href="#the-target" title="Link to this heading">#</a></h2>
+<p>Ubiquitin — 76 residues, the standard MD benchmark, and small enough that a
+nanosecond costs a couple of minutes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">fetch_structure</span><span class="p">(</span><span class="s1">'1UBQ'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s1">'pdb'</span><span class="p">)</span>
+<span class="n">s</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MolStructure(1UBQ, source=pdb, 76 residues)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="run-it-one-call">
+<h2>2. Run it — <em>one call</em><a class="headerlink" href="#run-it-one-call" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ov.mol.simulate</span></code> chains everything a correct run needs: repair the structure
+and add hydrogens at pH 7, parameterise with Amber14, solvate in a TIP3P box
+with 0.15 M NaCl, minimise, equilibrate (NVT then NPT with a released
+restraint), and produce the trajectory.</p>
+<p>Watch the printed platform line and the <code class="docutils literal notranslate"><span class="pre">Speed</span> <span class="pre">(ns/day)</span></code> column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">traj</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">ns</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="s1">'md_ubiquitin'</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">traj</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>🧬 ov.mol.simulate — 1 ns, output in md_ubiquitin/
+fixing structure (receptor_input.pdb) at pH 7.0
+solvating: tip3p box, padding 1.0 nm, 0.15 M Na+/Cl-
+system ready: 17081 particles (explicit solvent)
+   OpenMM platform: CUDA (precision=mixed)
+minimisation: -99592.7 -&gt; -285852.1 kJ/mol
+OpenMM platform: CUDA (precision=mixed)
+NVT 100 ps @ 300 K (restraint 'heavy', k=1000)
+NPT 100 ps @ 1 bar (restraint released linearly)
+equilibrated: potential energy -232677.6 kJ/mol
+OpenMM platform: CUDA (precision=mixed)
+production: 1 ns, 500000 steps @ 2 fs, NPT, frame every 10 ps -&gt; md_ubiquitin/prod.dcd
+#"Step"	"Time (ps)"	"Potential Energy (kJ/mole)"	"Temperature (K)"	"Box Volume (nm^3)"	"Density (g/mL)"	"Speed (ns/day)"	"Time Remaining"
+50000	99.99999999994834	-233564.2536023378	299.01065209373735	171.4054476698042	1.0113650064688766	0	--
+100000	200.00000000022686	-232923.72501580347	301.4364302582894	170.71471229873293	1.015457129365756	74.8	15:23
+150000	300.00000000070435	-233340.30847860873	300.6692408255923	170.8373831629241	1.014727973947298	76.1	13:14
+200000	400.00000000118183	-233597.09100499412	299.7872161138524	169.9191030670751	1.0202117864460563	72.5	11:54
+250000	500.0000000016593	-232933.93393933366	299.20827049376857	171.3459351158509	1.0117162777988518	68.7	10:29
+300000	599.9999999996356	-232655.47322768508	302.7226911554526	171.66724610651085	1.0098226401547512	73.8	7:48
+350000	699.999999997271	-233300.3243274265	299.49027277836115	170.842488809787	1.0146976486884414	77.5	5:34
+400000	799.9999999949063	-232937.44707820425	299.96662720848497	170.21140490262513	1.0184597899920078	78.5	3:40
+450000	899.9999999925416	-232695.65316536056	299.75541546805823	169.84924766711427	1.0206313779565621	79	1:49
+500000	999.9999999901769	-233852.20380115113	299.3339179114926	171.1157256442279	1.0130773839676017	79.5	0:00
+done: 100 frames on platform CUDA
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MDTrajectory(100 frames, 1.000 ns @ 10 ps/frame, 'prod.dcd')
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">traj</span><span class="o">.</span><span class="n">provenance</span>
+<span class="n">p</span><span class="p">[</span><span class="s1">'platform'</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="s1">'precision'</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="s1">'forcefield'</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="s1">'water'</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="s1">'ensemble'</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>('CUDA', 'mixed', 'amber14-all', 'tip3p', 'NPT')
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="did-it-stay-folded">
+<h2>3. Did it stay folded?<a class="headerlink" href="#did-it-stay-folded" title="Link to this heading">#</a></h2>
+<p>RMSD against the starting frame is the first thing to read. A stable domain
+rises quickly and then <strong>plateaus</strong> — typically 0.1–0.3 nm. A curve that keeps
+climbing means the structure is coming apart.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">plot_rmsd</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/5cfb301746366df6d7cf1628faf733fb4c5a56fe39aa33b5f108aa554f312426.png"><img alt="../_images/5cfb301746366df6d7cf1628faf733fb4c5a56fe39aa33b5f108aa554f312426.png" src="../_images/5cfb301746366df6d7cf1628faf733fb4c5a56fe39aa33b5f108aa554f312426.png" style="width: 391px; height: 260px;" />
+</a>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">rmsd</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'CA-RMSD  mean </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> nm | final </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> | max </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CA-RMSD  mean 0.111 nm | final 0.151 | max 0.170
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="where-is-it-flexible">
+<h2>4. Where is it flexible?<a class="headerlink" href="#where-is-it-flexible" title="Link to this heading">#</a></h2>
+<p>RMSF is the per-residue flexibility profile — the physics-based answer to
+“which parts of my model are floppy?”, complementary to pLDDT (which is only
+the predictor’s own confidence).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">plot_rmsf</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/669e2d3f0e616e8683fec08deb5d10db32fc91adcb40ebe6ba0ca94425775d36.png"><img alt="../_images/669e2d3f0e616e8683fec08deb5d10db32fc91adcb40ebe6ba0ca94425775d36.png" src="../_images/669e2d3f0e616e8683fec08deb5d10db32fc91adcb40ebe6ba0ca94425775d36.png" style="width: 380px; height: 260px;" />
+</a>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">rmsf</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'most flexible residues:'</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'core RMSF </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> nm vs peak </span><span class="si">{</span><span class="n">f</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> nm'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>most flexible residues: [10, 9, 74, 75, 76]
+core RMSF 0.053 nm vs peak 0.512 nm
+</pre></div>
+</div>
+</div>
+</div>
+<p>The peak should land on the <strong>C-terminal Leu73-Arg74-Gly75-Gly76
+tail</strong> — the segment ubiquitin uses to conjugate onto substrates, and which is
+genuinely disordered in solution. That the simulation finds it without being
+told is a good sign the setup is sound.</p>
+</section>
+<section id="compactness-and-secondary-structure">
+<h2>5. Compactness and secondary structure<a class="headerlink" href="#compactness-and-secondary-structure" title="Link to this heading">#</a></h2>
+<p>Radius of gyration tracks global size; DSSP tracks whether the helices and
+sheets survive.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">plot_rg</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/f3054ca09026a59ed2c4f9352f54e2d872306454abee10c315f900e4f7b22a2b.png"><img alt="../_images/f3054ca09026a59ed2c4f9352f54e2d872306454abee10c315f900e4f7b22a2b.png" src="../_images/f3054ca09026a59ed2c4f9352f54e2d872306454abee10c315f900e4f7b22a2b.png" style="width: 391px; height: 260px;" />
+</a>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rg</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">radius_of_gyration</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
+<span class="n">ss</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">secondary_structure</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Rg </span><span class="si">{</span><span class="n">rg</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> +/- </span><span class="si">{</span><span class="n">rg</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> nm   (ubiquitin, literature ~1.17)'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'helix </span><span class="si">{</span><span class="p">(</span><span class="n">ss</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"H"</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> | sheet </span><span class="si">{</span><span class="p">(</span><span class="n">ss</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"E"</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> | coil </span><span class="si">{</span><span class="p">(</span><span class="n">ss</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"C"</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rg 1.185 +/- 0.008 nm   (ubiquitin, literature ~1.17)
+helix 0.19 | sheet 0.34 | coil 0.47
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="which-contacts-actually-persist">
+<h2>6. Which contacts actually persist?<a class="headerlink" href="#which-contacts-actually-persist" title="Link to this heading">#</a></h2>
+<p>Hydrogen bonds present in most frames — the interactions holding the fold
+together (or, for a complex, holding the ligand in place).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hb</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">hbonds</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">hb</span><span class="p">)</span><span class="si">}</span><span class="s1"> hydrogen bonds present in &gt;60% of frames'</span><span class="p">)</span>
+<span class="n">hb</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>50 hydrogen bonds present in &gt;60% of frames
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>donor_residue</th>
+      <th>donor_atom</th>
+      <th>hydrogen</th>
+      <th>acceptor_residue</th>
+      <th>acceptor_atom</th>
+      <th>occupancy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>PHE4</td>
+      <td>N</td>
+      <td>H</td>
+      <td>SER65</td>
+      <td>O</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>VAL5</td>
+      <td>N</td>
+      <td>H</td>
+      <td>ILE13</td>
+      <td>O</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ILE23</td>
+      <td>N</td>
+      <td>H</td>
+      <td>ARG54</td>
+      <td>O</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>VAL17</td>
+      <td>N</td>
+      <td>H</td>
+      <td>MET1</td>
+      <td>O</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ASP21</td>
+      <td>N</td>
+      <td>H</td>
+      <td>GLU18</td>
+      <td>O</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="conformational-states">
+<h2>7. Conformational states<a class="headerlink" href="#conformational-states" title="Link to this heading">#</a></h2>
+<p>Clustering the frames by pairwise RMSD finds the distinct states visited. The
+medoid frames are representative structures you can send back to
+<code class="docutils literal notranslate"><span class="pre">ov.mol.view</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">labels</span><span class="p">,</span> <span class="n">medoids</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'cluster sizes:'</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">((</span><span class="n">labels</span> <span class="o">==</span> <span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="p">))])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'representative frames:'</span><span class="p">,</span> <span class="n">medoids</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cluster sizes: [26, 36, 38]
+representative frames: [51, 88, 15]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="stage-by-stage-control-when-the-defaults-are-not-what-you-want">
+<h2>8. Stage-by-stage control — <em>when the defaults are not what you want</em><a class="headerlink" href="#stage-by-stage-control-when-the-defaults-are-not-what-you-want" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">simulate</span></code> is an orchestration of four functions. Call them yourself for a
+different restraint scheme, a longer equilibration, implicit solvent, or a
+4 fs timestep with hydrogen-mass repartitioning.</p>
+<p><strong>Implicit solvent</strong> (GBn2) drops the water box entirely — far faster, and a
+good choice for long sampling when explicit solvation structure does not
+matter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sysobj</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">prepare_system</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">water</span><span class="o">=</span><span class="s1">'implicit'</span><span class="p">,</span> <span class="n">hmr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">sysobj</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MDSystem(1231 atoms, amber14-all/implicit)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Minimisation is not optional — it relieves the clashes left by
+structure repair and solvation. Skipping it is the most common cause of a
+<code class="docutils literal notranslate"><span class="pre">Particle</span> <span class="pre">coordinate</span> <span class="pre">is</span> <span class="pre">NaN</span></code> blow-up.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sysobj</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">sysobj</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OpenMM platform: CUDA (precision=mixed)
+minimisation: -1865.4 -&gt; -14500.6 kJ/mol
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sysobj</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">equilibrate</span><span class="p">(</span><span class="n">sysobj</span><span class="p">,</span> <span class="n">nvt_ps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">npt_ps</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OpenMM platform: CUDA (precision=mixed)
+NVT 100 ps @ 300 K (restraint 'heavy', k=1000)
+equilibrated: potential energy -10773.0 kJ/mol
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">hmr=True</span></code> allows a <strong>4 fs</strong> timestep instead of 2 fs, roughly
+doubling throughput. The guard refuses 4 fs on a system built without HMR,
+because it would be unstable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">traj2</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">production</span><span class="p">(</span><span class="n">sysobj</span><span class="p">,</span> <span class="n">ns</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">timestep_fs</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span> <span class="n">ensemble</span><span class="o">=</span><span class="s1">'NVT'</span><span class="p">,</span>
+                          <span class="n">report_ps</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">traj</span><span class="o">=</span><span class="s1">'md_implicit/prod.dcd'</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">traj2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OpenMM platform: CUDA (precision=mixed)
+   production: 2 ns, 500000 steps @ 4 fs, NVT, frame every 10 ps -&gt; md_implicit/prod.dcd
+#"Step"	"Time (ps)"	"Potential Energy (kJ/mole)"	"Temperature (K)"	"Speed (ns/day)"	"Time Remaining"
+50000	199.9999999998967	-10837.636051786785	302.32555650739266	0	--
+100000	400.0000000004537	-10599.096309643399	292.64286698955556	88.5	26:02
+150000	600.0000000014087	-10714.410527386057	308.2034512645991	83.2	24:13
+200000	800.0000000023637	-10742.994739162843	293.88880583159647	78.4	22:03
+250000	1000.0000000033186	-10601.246048079225	301.013883585517	77	18:42
+300000	1199.9999999992713	-10587.21834106349	305.8388718996018	76.5	15:03
+350000	1399.999999994542	-10676.13455149457	296.04416867530966	76.3	11:19
+400000	1599.9999999898125	-10865.177639652553	311.4517413583805	77.6	7:25
+450000	1799.9999999850832	-10651.282804505581	304.115226527518	75.7	3:48
+500000	1999.9999999803538	-10714.889314835986	305.3955572334219	74.5	0:00
+done: 200 frames on platform CUDA
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MDTrajectory(200 frames, 2.000 ns @ 10 ps/frame, 'prod.dcd')
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">plot_energy</span><span class="p">(</span><span class="n">traj2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/d7af47a6acb73ebbd13782a7d0d0e6dcddc0e050c50c9dd10ebee3fc0db33dac.png"><img alt="../_images/d7af47a6acb73ebbd13782a7d0d0e6dcddc0e050c50c9dd10ebee3fc0db33dac.png" src="../_images/d7af47a6acb73ebbd13782a7d0d0e6dcddc0e050c50c9dd10ebee3fc0db33dac.png" style="width: 423px; height: 260px;" />
+</a>
+</div>
+</div>
+</section>
+<section id="dock-md-mm-gbsa-rescoring-a-pose-with-dynamics">
+<h2>9. dock → MD → MM-GBSA — <em>rescoring a pose with dynamics</em><a class="headerlink" href="#dock-md-mm-gbsa-rescoring-a-pose-with-dynamics" title="Link to this heading">#</a></h2>
+<p>This is the part docking alone cannot do.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ov.mol.dock</span></code> returns a <strong>static</strong> pose with a Vina score: a single-point
+estimate on a rigid receptor. What we want to know is whether the pose
+<em>stays</em>, and what the binding energy looks like over a real ensemble.</p>
+<p>Because the <code class="docutils literal notranslate"><span class="pre">DockingResult</span></code> carries its receptor, it can be handed straight to
+<code class="docutils literal notranslate"><span class="pre">simulate</span></code>, and the resulting trajectory to <code class="docutils literal notranslate"><span class="pre">mmgbsa</span></code>.</p>
+<blockquote>
+<div><p>Simulating a protein–<strong>ligand</strong> complex needs small-molecule
+parameterisation, and AM1-BCC charges come from AmberTools:
+<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">openmmforcefields</span> <span class="pre">openff-toolkit</span> <span class="pre">ambertools</span></code></p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">egfr</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">fetch_structure</span><span class="p">(</span><span class="s1">'1M17'</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s1">'pdb'</span><span class="p">)</span>
+<span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">pockets</span><span class="p">(</span><span class="n">egfr</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pocket_id</th>
+      <th>rank</th>
+      <th>drug_score</th>
+      <th>volume</th>
+      <th>n_alpha_spheres</th>
+      <th>hydrophobicity_score</th>
+      <th>polarity_score</th>
+      <th>n_residues</th>
+      <th>residues</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>0.336140</td>
+      <td>486.480887</td>
+      <td>49</td>
+      <td>36.545455</td>
+      <td>5.0</td>
+      <td>11</td>
+      <td>[(A, 702), (A, 721), (A, 719), (A, 766), (A, 6...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>11</td>
+      <td>2</td>
+      <td>0.116385</td>
+      <td>283.182123</td>
+      <td>27</td>
+      <td>43.375000</td>
+      <td>3.0</td>
+      <td>8</td>
+      <td>[(A, 676), (A, 678), (A, 740), (A, 744), (A, 6...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>7</td>
+      <td>3</td>
+      <td>0.043613</td>
+      <td>224.191045</td>
+      <td>23</td>
+      <td>4.222222</td>
+      <td>7.0</td>
+      <td>9</td>
+      <td>[(A, 855), (A, 889), (A, 856), (A, 779), (A, 7...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">erlotinib</span> <span class="o">=</span> <span class="s1">'CCOCCOc1cc2ncnc(Nc3cccc(C#C)c3)c2cc1OCCOC'</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">dock</span><span class="p">(</span><span class="n">egfr</span><span class="p">,</span> <span class="n">erlotinib</span><span class="p">,</span> <span class="n">pocket</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DockingResult(8 poses, best -7.18 kcal/mol)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'static Vina score: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">affinities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> kcal/mol'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>static Vina score: -7.18 kcal/mol
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now relax that pose with real dynamics. <code class="docutils literal notranslate"><span class="pre">simulate</span></code> rebuilds the
+receptor plus the top pose as a single complex — the ligand is parameterised
+with GAFF and named <code class="docutils literal notranslate"><span class="pre">LIG</span></code> in the topology.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cplx</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">ns</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">water</span><span class="o">=</span><span class="s1">'implicit'</span><span class="p">,</span>
+                       <span class="n">outdir</span><span class="o">=</span><span class="s1">'md_egfr'</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cplx</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>🧬 ov.mol.simulate — 1 ns, output in md_egfr/
+   fixing structure (receptor_input.pdb) at pH 7.0
+parameterising ligand with gaff-2.11
+AM1-BCC charges assigned (from a generated conformer)
+system ready: 5084 particles
+   OpenMM platform: CUDA (precision=mixed)
+minimisation: 26118.2 -&gt; -48574.8 kJ/mol
+   implicit solvent: skipping the NPT stage (no box)
+   OpenMM platform: CUDA (precision=mixed)
+NVT 100 ps @ 300 K (restraint 'heavy', k=1000)
+equilibrated: potential energy -32535.1 kJ/mol
+   implicit solvent has no box — running NVT instead of NPT
+   OpenMM platform: CUDA (precision=mixed)
+production: 1 ns, 500000 steps @ 2 fs, NVT, frame every 10 ps -&gt; md_egfr/prod.dcd
+#"Step"	"Time (ps)"	"Potential Energy (kJ/mole)"	"Temperature (K)"	"Speed (ns/day)"	"Time Remaining"
+50000	99.99999999994834	-33104.15766525703	303.86760705908927	0	--
+100000	200.00000000022686	-33455.65621423629	308.1683671127994	30.5	37:45
+150000	300.00000000070435	-33794.14910877075	304.21335341089974	33.9	29:43
+200000	400.00000000118183	-33348.68291488629	295.9305462971101	38.8	22:16
+250000	500.0000000016593	-33507.307478801726	300.51195463237366	43.3	16:37
+300000	599.9999999996356	-33672.742592320465	301.64908939776507	46.6	12:21
+350000	699.999999997271	-33796.73700573468	300.83982472195504	49	8:49
+400000	799.9999999949063	-34056.8630638937	303.8507933418971	50.8	5:39
+450000	899.9999999925416	-34031.09280948312	296.1337207634839	52.3	2:45
+500000	999.9999999901769	-33796.755781608575	299.48316682075705	53.6	0:00
+done: 100 frames on platform CUDA
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MDTrajectory(100 frames, 1.000 ns @ 10 ps/frame, 'prod.dcd')
+</pre></div>
+</div>
+</div>
+</div>
+<p>Did the ligand stay in the pocket? Count protein–ligand contacts
+per frame; a pose that drifts out shows the count collapsing towards zero.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_contacts</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">contacts</span><span class="p">(</span><span class="n">cplx</span><span class="p">,</span> <span class="s1">'protein'</span><span class="p">,</span> <span class="s1">'resname LIG'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_contacts</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'frame'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'protein-ligand contacts'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/56b337ecebdd06b442c1c4b3e66c280a94e58a66c62bee453f7a4e9bdaf7532e.png"><img alt="../_images/56b337ecebdd06b442c1c4b3e66c280a94e58a66c62bee453f7a4e9bdaf7532e.png" src="../_images/56b337ecebdd06b442c1c4b3e66c280a94e58a66c62bee453f7a4e9bdaf7532e.png" style="width: 388px; height: 241px;" />
+</a>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'contacts: first </span><span class="si">{</span><span class="n">n_contacts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">, mean </span><span class="si">{</span><span class="n">n_contacts</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">, last </span><span class="si">{</span><span class="n">n_contacts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>contacts: first 683, mean 652, last 784
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, rescore over the ensemble with <strong>MM-GBSA</strong>:</p>
+<div class="math notranslate nohighlight">
+\[\Delta G_{bind} = \langle G_{complex}\rangle - \langle G_{receptor}\rangle - \langle G_{ligand}\rangle\]</div>
+<p>decomposed into van der Waals, electrostatic, polar solvation (GBn2) and
+non-polar (surface-area) terms.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">ov</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">mmgbsa</span><span class="p">(</span><span class="n">cplx</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">res</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OpenMM platform: CUDA (precision=mixed)
+scoring 20 of 100 frames (GBn2 implicit solvent)
+dG = -39.50 +/- 1.11 kcal/mol (vdW -45.5, elec -10.9, polar 24.1, nonpolar -7.2)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MMGBSAResult(dG = -39.50 +/- 1.11 kcal/mol, 20 frames)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>dG_kcal_mol</th>
+      <th>std</th>
+      <th>sem</th>
+      <th>n_frames</th>
+      <th>vdw_kcal_mol</th>
+      <th>electrostatic_kcal_mol</th>
+      <th>polar_solvation_kcal_mol</th>
+      <th>nonpolar_solvation_kcal_mol</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-39.5</td>
+      <td>4.97</td>
+      <td>1.11</td>
+      <td>20</td>
+      <td>-45.48</td>
+      <td>-10.91</td>
+      <td>24.06</td>
+      <td>-7.18</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="interpretation">
+<h2>Interpretation<a class="headerlink" href="#interpretation" title="Link to this heading">#</a></h2>
+<p><strong>The fold is stable.</strong> RMSD plateaus around 0.15 nm, Rg holds at the
+literature value (~1.17 nm), and the secondary structure survives — this
+model can carry downstream work.</p>
+<p><strong>Flexibility is where biology says it should be.</strong> The RMSF peak is the
+C-terminal Gly-Gly tail that ubiquitin uses for conjugation. A prediction
+confidence score cannot tell you that; dynamics can.</p>
+<p><strong>Reading the MM-GBSA number honestly.</strong> End-point MM-GBSA is a <strong>relative
+ranking</strong> tool, not an experimental binding free energy:</p>
+<ul class="simple">
+<li><p>it systematically <strong>overestimates</strong> affinity, often by 5–20 kcal/mol;</p></li>
+<li><p>it includes <strong>no entropy</strong> term;</p></li>
+<li><p>it uses implicit solvent, so bridging waters are invisible.</p></li>
+</ul>
+<p>Use it to rank a congeneric series against itself, and always quote the spread
+(<code class="docutils literal notranslate"><span class="pre">res.sem</span></code>) with the mean. For rigorous absolute free energies you need
+alchemical FEP/TI — <code class="docutils literal notranslate"><span class="pre">ov.mol.alchemical_free_energy</span></code> documents why that is a
+much more expensive undertaking and is deliberately not implemented here.</p>
+<p>What you <em>have</em> gained over plain docking is real: the pose was relaxed in a
+force field with a thermostat, you can see whether it stayed bound, and the
+score is an ensemble average rather than one rigid snapshot.</p>
+<p><strong>Reproducibility.</strong> <code class="docutils literal notranslate"><span class="pre">seed</span></code> controls every stochastic step — hydrogen
+placement, water and ion positions, initial velocities, thermostat and
+barostat. Given the same <code class="docutils literal notranslate"><span class="pre">MDSystem</span></code>, <code class="docutils literal notranslate"><span class="pre">seed</span></code>, <code class="docutils literal notranslate"><span class="pre">platform</span></code> and <code class="docutils literal notranslate"><span class="pre">precision</span></code>, a run
+repeats bit-for-bit. Across <em>different</em> platforms or precisions trajectories
+diverge, because MD is chaotic; compare ensemble properties, not individual
+frames. Every result object carries a <code class="docutils literal notranslate"><span class="pre">provenance</span></code> dict (engine versions,
+forcefield, integrator, seed, platform, file hashes).</p>
+<p><strong>Next steps.</strong> <code class="docutils literal notranslate"><span class="pre">ov.mol.production</span></code> writes checkpoints — continue a run with
+<code class="docutils literal notranslate"><span class="pre">resume=traj.checkpoint</span></code>. For a different target, everything here works
+unchanged on an AlphaFold model from <code class="docutils literal notranslate"><span class="pre">ov.mol.predict_structure</span></code>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="t_mol_docking.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Molecular docking — <em>validate the protocol, then dock the candidate</em></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../tutorials/index_synbio.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Synthetic Biology</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">0. Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-target">1. The target</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-it-one-call">2. Run it — <em>one call</em></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#did-it-stay-folded">3. Did it stay folded?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-is-it-flexible">4. Where is it flexible?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compactness-and-secondary-structure">5. Compactness and secondary structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#which-contacts-actually-persist">6. Which contacts actually persist?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conformational-states">7. Conformational states</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-by-stage-control-when-the-defaults-are-not-what-you-want">8. Stage-by-stage control — <em>when the defaults are not what you want</em></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dock-md-mm-gbsa-rescoring-a-pose-with-dynamics">9. dock → MD → MM-GBSA — <em>rescoring a pose with dynamics</em></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">Interpretation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Zehua Zeng
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, 112 Lab, USTB.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
