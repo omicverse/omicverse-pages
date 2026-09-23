@@ -1,0 +1,55 @@
+# Tutorials of Synthetic Biology
+
+Tutorials for the `omicverse.synbio` module — a self-contained **three-layer
+design stack** that bridges metabolism, protein/enzyme engineering, and DNA:
+
+- **Layer A — metabolic networks** (CPU, COBRApy): load genome-scale models,
+  FBA / FVA / pFBA, gene-deletion scans, strain design (FSEOF + growth-coupled
+  knockouts), and enzyme-constrained (GECKO-light) models.
+- **Layer B — proteins & enzymes** (GPU, ESM / ProteinMPNN): ESMFold structure
+  prediction, ESM-2 embeddings, zero-shot variant effect (in-silico directed
+  evolution), ProteinMPNN inverse design, thermostability ΔΔG, and k_cat /
+  EC-number prediction.
+- **Layer C — DNA** (CPU, DNAchisel / primer3): codon optimization and PCR
+  primer design.
+
+The differentiator is the **A↔B hinge** — predict a turnover number from an
+enzyme's sequence, push it into a genome-scale model as an enzyme-capacity
+constraint, and re-solve the achievable yield. *Edit the enzyme → the metabolic
+network re-solves its yield.*
+
+## Getting started
+
+- [Synthetic biology with `ov.synbio` — from metabolism to enzyme to DNA](t_synbio_01_intro.ipynb) — a single end-to-end tour of the metabolism/protein/DNA core on real data (`e_coli_core`, the GB1 domain, *E. coli* PfkA), closing with the A↔B coupling.
+- [Circuits, CRISPR, assembly & pathway design](t_synbio_02_circuits_to_pathways.ipynb) — the rest of the design-build-test-learn cycle: genetic-circuit simulation (toggle / repressilator), regulatory-element strength, CRISPR guide design, Golden Gate assembly, pathway thermodynamics (MDF) & retrosynthesis, and library design.
+- [CRISPR editing & directed-evolution libraries](t_synbio_03_crispr_library.ipynb) — guide-RNA design + off-target specificity (CFD), base editing & HDR knock-in, degenerate-codon / DMS libraries, and ESM model-guided variant design.
+- [Advanced SOTA — mRNA design, de-novo binders, prime editing](t_synbio_04_advanced.ipynb) — the advanced state-of-the-art layer with baseline↔SOTA comparisons: mRNA therapeutics (**LinearDesign**), RNA / siRNA / antisense design, **prime editing** (PrimeDesign), CRISPRi/a & Cas13, dynamic FBA, minimal cut sets, retrobiosynthesis, and the full **de-novo binder** pipeline (**RFdiffusion → ProteinMPNN → Boltz-2**).
+
+### Closing the gaps — reconstruction, omics coupling, and manufacturability
+
+- [Building a strain from scratch — layer A end to end](t_synbio_05_strain_from_scratch.ipynb) — start where industrial work actually starts: an organism BiGG has no model for. Reconstruct by homology transfer, gap-fill, validate, constrain the model with a **real published *E. coli* protein-abundance table** (GIMME / iMAT / RIPTiDe), predict knockouts with MOMA and ROOM instead of FBA alone, derive OptForce MUST/FORCE sets, add thermodynamic and proteome-budget constraints, solve a two-member community, and hand the pathway to layer B via reaction→enzyme matching.
+- [From a design to an order — manufacturability, kinetics, ancestors and DNA](t_synbio_06_design_to_order.ipynb) — the question that kills industrial enzyme projects: *can it be made?* Solubility, aggregation hotspots, signal peptides and localisation; K_M and k_cat/K_M and substrate scope; ancestral reconstruction for thermostability; then codon **harmonisation** (not optimisation), synthesis difficulty, Golden Gate overhang fidelity, terminator strength, truth-table→DNA compilation, biosecurity screening, and vector-backbone selection.
+
+- [Design-Build-Test-Learn, on a loop that can be checked](t_synbio_07_dbtl_cycle.ipynb) — a DBTL cycle on a library where **every combination has already been measured** (Urtecho 2019, GEO GSE108535), so each step can be verified rather than asserted. A 64-run strength-2 orthogonal array replaces 512 combinations and recovers the full library's per-level effects at **r = 0.99 / 0.93 / 0.98**, identifying the best level of all three factors. Then the uncomfortable half: the additive model's recommended combination **ranks 77th of 512** because 30% of the variance is interaction, and the Gaussian process's predictions of its own proposals are **anti-correlated with measurement (r = -0.19)** — while the batch it chose still **found the global optimum**. Round 3 confirms it stops claiming improvement once the space is exhausted.
+- [From a chosen design to files and instruments](t_synbio_08_build_and_order.ipynb) — the Build layer end to end, on the real 150-nt sequence of the winning promoter. Vector **first** (it fixes the sites the insert must avoid), then a codon-optimised CDS with the cloning enzymes excluded, a checked terminator, and a vendor-facing synthesis assessment. Fragments are prepared for both chemistries (`domesticate` for Golden Gate, `gibson_arms` for Gibson), assembled, annotated, and written as **GenBank and SBOL that are read back and compared**. Then a randomised edge-avoiding plate, equimolar volumes from ng/µL and length, an **Echo pick list that refuses to draw more than a source well holds**, an Opentrons protocol **verified with `opentrons_simulate`**, and a thermocycler program derived from the primers' Tm.
+- [From a plate reader to a number you can compare](t_synbio_09_assays.ipynb) — the Test layer on two **real measured** datasets. A 96-well plate-reader run (145 timepoints, 96/96 wells fitted, median R² 0.9985) fitted with four growth models that agree to R² ≈ 1.000 and **disagree about µmax by 1.4x**, because each places the inflection at a different height; AIC picks the one the default is not. Then the join that gives the number meaning: measured µmax beside FBA and RBA, where Gompertz reads **1.29x above the stoichiometric bound and fires a warning**, and the AIC-preferred model reads **0.91 and does not** — same plate, same model, different default. Closes with a real dose-response (Streibig's ryegrass assay) fitted to **IC50 = 2.99 µM against the 3.06 µM drc publishes for it**.
+- [Setting the level, not just building the thing](t_synbio_10_expression_tuning.ipynb) — the knobs, and which of them are worth turning. A graded RBS series reaching **5,653x** against a promoter series that manages only **2x at 14% of the requested span**, because the consensus-match scale compresses a 100-fold measured range into under 1.5-fold. CAI optimisation raises CAI every time and moves tAI **in either direction** depending on the sequence. Two tables that carry checks which can fail: `check_trna_table()` passes after all 86 MG1655 tRNA genes were recounted from the genome, and `check_integration_sites()` **fails on purpose** — two loci 12 kb apart are assigned a 2.6x expression difference gene dosage cannot produce. Ends with burden as a growth rate, and the demonstration that a 500-fold change in copy number moves it 3 percentage points while the expressed-protein fraction moves it across the whole range.
+- [Designs over dials](t_synbio_11_continuous_doe.ipynb) — the continuous counterpart to tutorial 07: designs over temperature, inducer and induction OD rather than over parts. 256 runs against 16 at eight factors; why the rotatable axial points must be rescaled or they ask for negative concentrations; Lenth's method on an unreplicated screen; a Gaussian-process batch with its own R² printed before its proposals are read; and `orthogonal_array` as the bridge back to discrete levels.
+- [The flux analyses under everything else](t_synbio_12_flux_toolkit.ipynb) — the primitives `strain_design` is built from. pFBA and FVA on the alternate optima FBA hides; single and double deletion scans with the caveat that FBA is systematically optimistic about knockouts; a production envelope and why it is **not** a coupling test (coupling is the transpose — the minimum product at high growth); enzyme budgets compared the only fair way, with `apply_kcat` holding the budget fixed; SteadyCom on a two-member community; and a survey of which optional backends are actually installed.
+
+### Worked case studies
+
+- [Case study I — an *E. coli* succinate cell factory](t_synbio_case01_succinate.ipynb) — a real metabolic-engineering project: diagnose, strain-design (FSEOF + OptKnock), verify, check thermodynamics (eQuilibrator + MDF), enzyme k_cat, and build.
+- [Case study II — engineering a more thermostable DHFR](t_synbio_case02_dhfr_engineering.ipynb) — a real protein-engineering campaign on *E. coli* DHFR: CLEAN function, ESMFold, ESM fitness + ThermoMPNN stability landscapes, stabilised-variant design, and build.
+- [Case study III — evaluating a protein design (does it get *better*?)](t_synbio_case03_dhfr_evaluation.ipynb) — score a DHFR variant with an in-silico metric panel (`evaluate_design`): a 3D WT-vs-variant structural overlay (`view_superposition` + self-consistency `structure_rmsd`), plus foldability / EC-retention / ΔΔG / ESM-fitness / kcat — each tagged with its **reliability**, and an honest read of what the numbers do and don't prove.
+
+## Installation
+
+```bash
+pip install 'omicverse[synbio]'
+```
+
+The GPU protein models reuse omicverse's existing PyTorch dependency and
+download weights on first use to `~/.omicverse/synbio_weights` (override with
+`OMICOS_SYNBIO_WEIGHTS`). All backends are optional and gated behind actionable
+errors, so `import omicverse` never requires them.
